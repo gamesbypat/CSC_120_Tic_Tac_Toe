@@ -1,3 +1,7 @@
+import datetime
+import sqlite3
+connection = sqlite3.connect("tictactoe.db")
+
 def check_mark(r, c):
   if(str(board[r][c]) == '-'):
     return True
@@ -54,6 +58,7 @@ def print_board():
 turnCount = 0
 playing = True
 winner = 2
+gameNum = 0
 while(playing):
   print("Printing board...")
   print_board()
@@ -81,6 +86,16 @@ while(playing):
     error(2)
 print_board()
 display_winner(winner)
-    
-  
 
+# cursor object
+cursor = connection.cursor()
+cursor.execute("INSERT INTO games VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (gameNum, winner, datetime.datetime.now(), board[0][0], board[0][1], board[0][2], board[1][0], board[1][1], board[1][2], board[2][0], board[2][1], board[2][2]))
+    
+cursor.execute("SELECT * FROM games")
+
+# store all the fetched data in the ans variable
+ans = cursor.fetchall()
+
+for i in ans:
+    print(i)  
+connection.close
