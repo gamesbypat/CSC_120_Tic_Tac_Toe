@@ -8,7 +8,35 @@ def place_mark(r, c, p):
     board[r][c] = 'X'
   else:
     board[r][c] = 'O' 
+    
+def game_over():
+  win = False
+  if(board[0][0] != '-' and board[0][0] == board[0][1] and board[0][1] == board[0][2]):
+    win = True
+  elif(board[1][0] != '-' and board[1][0] == board[1][1] and board[1][1] == board[1][2]):
+    win = True
+  elif(board[2][0] != '-' and board[2][0] == board[2][1] and board[2][1] == board[2][2]):
+    win = True
+  elif(board[0][0] != '-' and board[0][0] == board[1][0] and board[1][0] == board[2][0]):
+    win = True
+  elif(board[0][1] != '-' and board[0][1] == board[1][1] and board[1][1] == board[2][1]):
+    win = True
+  elif(board[0][2] != '-' and board[0][2] == board[1][2] and board[1][2] == board[2][2]):
+    win = True
+  elif(board[0][0] != '-' and board[0][0] == board[1][1] and board[1][1] == board[2][2]):
+    win = True
+  elif(board[0][2] != '-' and board[0][2] == board[1][1] and board[1][1] == board[2][0]):
+    win = True
+  return win
   
+def display_winner(w):
+  if(w == 0):
+    print("Player 1 wins!")
+  elif(w == 1):
+    print("Player 2 wins!")
+  elif(w == 2):
+    print("Game is a draw")
+    
 def error(e):
   if(e == 0):
     print("Invalid row. Please select a number between 0-2.")
@@ -18,12 +46,17 @@ def error(e):
     print("Invalid choice. Please mark again.")
   
 board = [['-','-','-'],['-','-','-'],['-','-','-']]
-turnCount = 0
-playing = True
-while(playing):
-  print("Printing board...")
+
+def print_board():
   for i in range(3):
     print(board[i])
+
+turnCount = 0
+playing = True
+winner = 2
+while(playing):
+  print("Printing board...")
+  print_board()
   if(turnCount % 2 == 0):
     print("Player 1, make your move")
   else:
@@ -38,9 +71,16 @@ while(playing):
     col = input("Enter col num (0-2):")
   if(check_mark(int(row), int(col))):
     place_mark(int(row), int(col), turnCount)
+    if(game_over()):
+      playing = False;
+      winner = turnCount%2
     turnCount+=1
+    if(turnCount == 9):
+      playing = False;
   else:
     error(2)
+print_board()
+display_winner(winner)
     
   
 
